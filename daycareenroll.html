@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daycare Enrollment System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style copy.css">
+</head>
+<body>
+  
+  <div class="container">
+    <!-- Header -->
+    <div class="header text-center">
+      <h1 class="font-bold">Daycare Enrollment</h1>
+      <p class="mt-3">Please complete all required information</p>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="progress-container">
+      <div class="progress-steps">
+        <div class="progress-bar" style="width: 0%"></div>
+        <div class="step">
+          <div class="step-icon active"><span>1</span></div>
+          <div class="step-text active">Parent Info</div>
+        </div>
+        <div class="step">
+          <div class="step-icon"><span>2</span></div>
+          <div class="step-text">Child Info</div>
+        </div>
+        <div class="step">
+          <div class="step-icon"><span>3</span></div>
+          <div class="step-text">Program</div>
+        </div>
+        <div class="step">
+          <div class="step-icon"><span>4</span></div>
+          <div class="step-text">Payment</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="enrollmentForm" class="space-y-8">
+      <!-- Step 1: Parent Info -->
+      <div id="step1" class="card">
+        <h2 class="step-title">Parent Information</h2>
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <div>
+            <label class="block mb-2">First Name</label>
+            <input type="text" name="parentFirstName" required class="w-full rounded-lg">
+          </div>
+          <div>
+            <label class="block mb-2">Last Name</label>
+            <input type="text" name="parentLastName" required class="w-full rounded-lg">
+          </div>
+          <div>
+            <label class="block mb-2">Email</label>
+            <input type="email" name="parentEmail" required class="w-full rounded-lg">
+          </div>
+          <div>
+            <label class="block mb-2">Phone</label>
+            <input type="tel" name="parentPhone" required class="w-full rounded-lg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Child Info -->
+      <div id="step2" class="hidden card">
+        <h2 class="step-title">Child Information</h2>
+        <div id="childrenContainer">
+          <div class="child-section border-b pb-8 mb-8">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              <div>
+                <label class="block mb-2">Child's First Name</label>
+                <input type="text" name="childFirstName[]" required class="w-full rounded-lg">
+              </div>
+              <div>
+                <label class="block mb-2">Child's Last Name</label>
+                <input type="text" name="childLastName[]" required class="w-full rounded-lg">
+              </div>
+              <div>
+                <label class="block mb-2">Date of Birth</label>
+                <input type="date" name="childDOB[]" required class="w-full rounded-lg">
+              </div>
+              <div>
+                <label class="block mb-2">Medical Records</label>
+                <input type="file" name="medicalRecords[]" accept=".pdf,.jpg,.jpeg,.png" class="w-full">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" id="addChild" class="btn-secondary inline-flex items-center rounded-lg">
+          <i class="fas fa-plus mr-2"></i> Add Another Child
+        </button>
+      </div>
+
+      <!-- Step 3: Program Selection -->
+      <div id="step3" class="hidden card">
+        <h2 class="step-title">Program Selection</h2>
+        <div class="space-y-6">
+          <div>
+            <label class="block mb-2">Program Type</label>
+            <select name="programType" id="programType" required class="w-full rounded-lg">
+              <option value="">Select a program</option>
+              <option value="fullTime">Full Time (7:00 AM - 6:00 PM)</option>
+              <option value="halfDay">Half Day (9:00 AM - 1:00 PM)</option>
+              <option value="afterSchool">After School (2:00 PM - 6:00 PM)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block mb-2">Start Date</label>
+            <input type="date" name="startDate" required class="w-full rounded-lg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Payment -->
+      <div id="step4" class="hidden card">
+        <h2 class="step-title">Payment</h2>
+        <div class="space-y-6">
+          <div>
+            <label class="block mb-2">Program Cost</label>
+            <p id="programCostDisplay" class="text-blue-600 font-bold text-lg">$0</p>
+          </div>
+          <div>
+            <label class="block mb-2">Cardholder Name</label>
+            <input type="text" name="cardName" required class="w-full rounded-lg">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block mb-2">Card Number</label>
+              <input type="text" name="cardNumber" required class="w-full rounded-lg">
+            </div>
+            <div>
+              <label class="block mb-2">Expiration Date</label>
+              <input type="text" name="cardExpiry" required class="w-full rounded-lg">
+            </div>
+            <div>
+              <label class="block mb-2">CVV</label>
+              <input type="text" name="cardCVV" required class="w-full rounded-lg">
+            </div>
+            <div>
+              <label class="block mb-2">Billing ZIP</label>
+              <input type="text" name="billingZip" required class="w-full rounded-lg">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between mt-8">
+        <button type="button" id="prevBtn" class="hidden btn-primary inline-flex items-center rounded-lg">
+          <i class="fas fa-arrow-left mr-2"></i> Previous
+        </button>
+        <button type="button" id="nextBtn" class="btn-primary inline-flex items-center rounded-lg">
+          Next <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center mt-8">
+        <button type="submit" id="submitBtn" class="hidden btn-secondary inline-flex items-center rounded-lg">
+          <i class="fas fa-check mr-2"></i> Submit Enrollment
+        </button>
+      </div>
+
+      <!-- Success Message -->
+      <div id="successMessage" class="hidden success-message bg-green-100 border border-green-400 text-green-700 rounded-lg p-4 mt-4">
+        <p class="font-medium"><i class="fas fa-check-circle mr-2"></i> Enrollment submitted successfully!</p>
+      </div>
+
+      <!-- Enrollment Summary Button -->
+      <div class="text-center mt-4">
+        <button type="button" id="summaryBtn" class="hidden btn-secondary inline-flex items-center rounded-lg">
+          <i class="fas fa-info-circle mr-2"></i> View Enrollment Summary
+        </button>
+      </div>
+
+      <!-- Enrollment Summary Display -->
+      <div id="summaryDisplay" class="hidden bg-black-100 border border-black-300 p-4 rounded-lg mt-4">
+        <h3 class="font-bold text-lg mb-2">Enrollment Summary</h3>
+        <p><strong>Selected Program:</strong> <span id="summaryProgram"></span></p>
+        <div id="childSummary" class="mt-2"></div>
+      </div>
+    </form>
+  </div>
+
+  <!-- JS Logic -->
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    const steps = [
+      document.getElementById("step1"),
+      document.getElementById("step2"),
+      document.getElementById("step3"),
+      document.getElementById("step4")
+    ];
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const progressBar = document.querySelector(".progress-bar");
+    const programType = document.getElementById("programType");
+    const costDisplay = document.getElementById("programCostDisplay");
+    const summaryBtn = document.getElementById("summaryBtn");
+    const summaryDisplay = document.getElementById("summaryDisplay");
+    const summaryProgram = document.getElementById("summaryProgram");
+    const childSummary = document.getElementById("childSummary");
+
+    function updateStep() {
+      steps.forEach((step, i) => {
+        step.classList.toggle("hidden", i !== currentStep - 1);
+        document.querySelectorAll(".step-icon")[i].classList.toggle("active", i < currentStep);
+        document.querySelectorAll(".step-text")[i].classList.toggle("active", i < currentStep);
+      });
+
+      progressBar.style.width = `${((currentStep - 1) / (totalSteps - 1)) * 100}%`;
+      prevBtn.classList.toggle("hidden", currentStep === 1);
+      nextBtn.classList.toggle("hidden", currentStep === totalSteps);
+      submitBtn.classList.toggle("hidden", currentStep !== totalSteps);
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStep < totalSteps) currentStep++;
+      updateStep();
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 1) currentStep--;
+      updateStep();
+    });
+
+    document.getElementById("enrollmentForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      document.getElementById("successMessage").classList.remove("hidden");
+      summaryBtn.classList.remove("hidden");
+    });
+
+    programType.addEventListener("change", () => {
+      const val = programType.value;
+      const prices = {
+        fullTime: 1200,
+        halfDay: 700,
+        afterSchool: 500
+      };
+      costDisplay.textContent = `$${prices[val] || 0}`;
+    });
+
+    summaryBtn.addEventListener("click", () => {
+      const selectedProgramText = programType.options[programType.selectedIndex].text;
+      summaryProgram.textContent = selectedProgramText;
+
+      const firstNames = document.querySelectorAll('input[name="childFirstName[]"]');
+      const lastNames = document.querySelectorAll('input[name="childLastName[]"]');
+
+      let childrenHTML = "<ul class='list-disc ml-5'>";
+      firstNames.forEach((input, index) => {
+        const fullName = `${input.value} ${lastNames[index].value}`;
+        childrenHTML += `<li>${fullName}</li>`;
+      });
+      childrenHTML += "</ul>";
+
+      childSummary.innerHTML = childrenHTML;
+      summaryDisplay.classList.remove("hidden");
+    });
+
+    updateStep();
+  </script>
+</body>
+</html>
