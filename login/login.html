@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daycare Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <div class="bg-white p-10 rounded-lg shadow-2xl w-[500px] max-w-[90%]">
+        <div class="text-center mb-10">
+            <i class="fas fa-baby text-5xl text-pink-500 mb-4"></i>
+            <h1 class="text-3xl font-bold text-gray-800">Daycare Management System</h1>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-6">
+            <div class="relative">
+                <i class="fas fa-user absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="text" placeholder="Username" class="w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500 text-lg">
+            </div>
+            <div class="relative">
+                <i class="fas fa-lock absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="password" id="loginPassword" placeholder="Password" class="w-full pl-12 pr-12 py-3 border rounded-lg focus:outline-none focus:border-pink-500 text-lg">
+                <button type="button" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600" onclick="togglePassword('loginPassword')">
+                    <i class="fas fa-eye text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Forgot Password -->
+            <div class="text-right">
+                <a href="#" class="text-sm text-pink-500 hover:text-pink-600" onclick="alert('Please contact admin to reset your password.')">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition duration-300 text-lg font-semibold">
+                Login
+            </button>
+        </form>
+
+        <div class="mt-8 text-center">
+            <p class="text-gray-600 text-lg">Don't have an account? <a href="#" class="text-pink-500 hover:text-pink-600" onclick="toggleForms()">Sign Up</a></p>
+        </div>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="hidden space-y-6">
+            <div class="relative">
+                <i class="fas fa-user absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="text" placeholder="Username" class="w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:border-pink-500 text-lg">
+            </div>
+            <div class="relative">
+                <i class="fas fa-lock absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="password" id="signupPassword" placeholder="Password" class="w-full pl-12 pr-12 py-3 border rounded-lg focus:outline-none focus:border-pink-500 text-lg">
+                <button type="button" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600" onclick="togglePassword('signupPassword')">
+                    <i class="fas fa-eye text-lg"></i>
+                </button>
+            </div>
+            <div class="relative">
+                <i class="fas fa-lock absolute left-4 top-4 text-gray-400 text-lg"></i>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full pl-12 pr-12 py-3 border rounded-lg focus:outline-none focus:border-pink-500 text-lg">
+                <button type="button" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600" onclick="togglePassword('confirmPassword')">
+                    <i class="fas fa-eye text-lg"></i>
+                </button>
+            </div>
+            <div class="flex space-x-6 text-lg">
+                <label class="flex items-center">
+                    <input type="radio" name="gender" value="male" class="text-pink-500">
+                    <span class="ml-2">Male</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="gender" value="female" class="text-pink-500">
+                    <span class="ml-2">Female</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="gender" value="others" class="text-pink-500">
+                    <span class="ml-2">Others</span>
+                </label>
+            </div>
+            <div class="flex space-x-6 text-lg">
+                <label class="flex items-center">
+                    <input type="radio" name="role" value="parent" class="text-pink-500">
+                    <span class="ml-2">Parent</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="role" value="volunteer" class="text-pink-500">
+                    <span class="ml-2">Volunteer</span>
+                </label>
+            </div>
+            <button type="submit" class="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition duration-300 text-lg font-semibold">
+                Sign Up
+            </button>
+        </form>
+
+        <div class="mt-8 text-center">
+            <p class="text-gray-600 text-lg">Already have an account? <a href="#" class="text-pink-500 hover:text-pink-600" onclick="toggleForms()">Login</a></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

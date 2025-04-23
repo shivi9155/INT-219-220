@@ -1,0 +1,133 @@
+/* Custom styles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#loginForm, #signupForm {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Custom input focus styles */
+input:focus {
+    box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+}
+
+/* Custom radio button styles */
+input[type="radio"] {
+    accent-color: #ec4899;
+    width: 1.2em;
+    height: 1.2em;
+}
+
+/* Custom button hover effect */
+button[type="submit"] {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+}
+
+/* Custom icon hover effects */
+.fa-eye:hover, .fa-eye-slash:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* Custom link hover effect */
+a:hover {
+    text-decoration: underline;
+}
+
+/* Custom form transition */
+.hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Background with image and gradient overlay */
+body {
+    background-image: url('https://images.unsplash.com/photo-1600494603989-9650cfec0e31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.7), rgba(59, 130, 246, 0.7));
+    z-index: -1;
+}
+
+/* Enhanced login box styles */
+.bg-white {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Input field styles */
+input {
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+input:hover {
+    border-color: #ec4899;
+}
+
+/* Radio button container styles */
+.flex.space-x-6 {
+    justify-content: space-around;
+    padding: 1rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .w-\[500px\] {
+        width: 90%;
+        padding: 1.5rem;
+    }
+    
+    .flex.space-x-6 {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Custom background gradient animation */
+body {
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+} 

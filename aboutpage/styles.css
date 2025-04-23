@@ -1,0 +1,236 @@
+:root {
+    --primary-color: #b06486;     /* Main pink */
+    --primary-light: #d687a7;     /* Lighter shade of main pink */
+    --primary-dark: #8e4f6b;      /* Darker shade of main pink */
+    --accent-color: #c25d88;      /* Complementary pink */
+    --text-color: #4a4a4a;
+    --text-light: #ffffff;
+    --card-bg-light: rgba(255, 255, 255, 0.95);
+    --card-bg-translucent: rgba(176, 100, 134, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--text-light);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.header {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
+    padding: 1rem;
+    box-shadow: 0 4px 20px rgba(176, 100, 134, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    animation: gentle-spin 30s linear infinite;
+    text-shadow: 2px 2px 4px rgba(176, 100, 134, 0.2);
+}
+
+h1 {
+    font-family: 'Comic Neue', cursive;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(176, 100, 134, 0.1);
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--text-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    opacity: 0.6;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: gentle-bounce 3s ease infinite;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mission-vision {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: linear-gradient(145deg, var(--card-bg-light), rgba(255, 255, 255, 0.9));
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 
+        0 4px 15px rgba(176, 100, 134, 0.1),
+        inset 0 -2px 10px rgba(176, 100, 134, 0.05);
+    transition: all 0.5s ease;
+    color: var(--text-color);
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 8px 25px rgba(176, 100, 134, 0.15),
+        inset 0 -2px 10px rgba(176, 100, 134, 0.08);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+}
+
+.team {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.85));
+    color: var(--text-color);
+    backdrop-filter: blur(10px);
+}
+
+.team h2 {
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(176, 100, 134, 0.1);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.team-member {
+    padding: 1.5rem;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, rgba(255, 255, 255, 0.95));
+    transition: all 0.5s ease;
+    box-shadow: 
+        0 4px 15px rgba(176, 100, 134, 0.08),
+        inset 0 -2px 10px rgba(176, 100, 134, 0.03);
+}
+
+.team-member:hover {
+    transform: scale(1.02);
+    box-shadow: 
+        0 8px 25px rgba(176, 100, 134, 0.12),
+        inset 0 -2px 10px rgba(176, 100, 134, 0.05);
+}
+
+.member-image {
+    font-size: 4rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+}
+
+.member-bio {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+footer {
+    background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+    color: var(--text-light);
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 -4px 20px rgba(176, 100, 134, 0.15);
+}
+
+@keyframes gentle-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes gentle-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+
+    .mission-vision {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+} 

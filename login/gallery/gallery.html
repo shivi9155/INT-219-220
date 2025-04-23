@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daycare Gallery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Nunito:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: white;
+      overflow-x: hidden;
+    }
+
+    .gallery-title {
+      font-family: 'Chelsea Market', cursive;
+      font-size: 2.8rem;
+      color: #b06486;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4rem;
+      position: relative;
+      padding: 1rem 2rem;
+      background: linear-gradient(to right, #f8d1e0, #fff9fb);
+      border-radius: 50px;
+      box-shadow: 0 8px 32px rgba(176,100,134,0.1);
+      border: 4px solid #f8d1e0;
+    }
+
+    .gallery-title::before {
+      content: "";
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23f8d1e0" d="M50 16c-18.8 0-34 15.2-34 34s15.2 34 34 34 34-15.2 34-34-15.2-34-34-34zm0 60c-14.3 0-26-11.7-26-26s11.7-26 26-26 26 11.7 26 26-11.7 26-26 26z"/></svg>');
+      position: absolute;
+      left: -20px;
+      top: -20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(176,100,134,0.1);
+    }
+
+    .gallery-title img.heart {
+      width: 2.5rem;
+      height: 2.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .floating-doodle {
+      position: fixed;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.15;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(-5deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+      100% { transform: translateY(0px) rotate(-5deg); }
+    }
+
+    .tab-hover {
+      position: relative;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      color: #4b5563;
+      transition: color 0.3s ease;
+    }
+
+    .tab-hover::before {
+      content: '';
+      background: url('https://www.footprintseducation.in/assets/images/icons/circle.png') no-repeat center center;
+      background-size: contain;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .tab-selected::before,
+    .tab-hover:hover::before {
+      opacity: 1;
+    }
+
+    .tab-hover:hover {
+      color: #b06486;
+    }
+
+    .zoom-img {
+      transition: transform 0.3s ease-in-out, filter 0.3s ease;
+    }
+
+    .zoom-img:hover {
+      transform: scale(1.05);
+      filter: brightness(1.05);
+    }
+
+    .wave-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(176,100,134,0.9) 20%, rgba(176,100,134,0.7) 100%);
+      color: white;
+      padding-top: 3.5rem;
+      padding-bottom: 1.5rem;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .wave-overlay::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3.5rem;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M0,224L60,213.3C120,203,240,181,360,170.7C480,160,600,160,720,138.7C840,117,960,75,1080,80C1200,85,1320,139,1380,165.3L1440,192L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path></svg>');
+      background-size: cover;
+    }
+
+    .wave-overlay::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path fill="%23ffffff" d="M0 10 Q 25 5 50 10 T 100 10 L 100 0 L 0 0 Z"/></svg>') repeat-x;
+    }
+
+    .img-card:hover .wave-overlay {
+      transform: translateY(0);
+    }
+
+    .img-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .img-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .img-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(248,209,224,0.1) 0%, rgba(252,232,240,0.2) 100%);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .img-card:hover::before {
+      opacity: 1;
+    }
+
+    .decorative-border {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .img-card:hover .decorative-border {
+      opacity: 0.3;
+    }
+
+    .decorative-border.top-left {
+      top: -10px;
+      left: -10px;
+      width: 50px;
+      transform: rotate(-15deg);
+    }
+
+    .decorative-border.bottom-right {
+      bottom: -10px;
+      right: -10px;
+      width: 50px;
+      transform: rotate(15deg);
+    }
+
+    .wave-overlay div {
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      font-size: 1.25rem;
+    }
+
+    .animate-float-delayed {
+      animation: float 4s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+
+    .animate-spin-slow {
+      animation: spin 20s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .absolute.w-full.h-1.bg-gradient-to-r {
+      background: linear-gradient(to right, transparent, #f8d1e0, transparent);
+    }
+
+    .w-12.h-12.bg-\[\#ffd8b1\] {
+      background-color: #f8d1e0;
+    }
+</style>
+</head>
+<body class="px-4 py-8">
+  <div class="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#b06486] to-transparent -z-10"></div>
+  <div class="floating-doodle" style="left: 5%; top: 10%; width: 80px">
+    <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" alt="star">
+  </div>
+  <div class="floating-doodle" style="right: 5%; top: 30%; width: 100px">
+    <img src="https://cdn-icons-png.flaticon.com/512/259/259713.png" alt="cloud">
+  </div>
+  <div class="floating-doodle" style="left: 15%; top: 60%; width: 70px">
+    <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" alt="cloud">
+  </div>
+  <div class="floating-doodle" style="right: 20%; top: 70%; width: 90px">
+    <img src="https://cdn-icons-png.flaticon.com/512/259/259778.png" alt="balloon">
+  </div>
+
+  <div class="text-center relative">
+    <div class="absolute -top-8 left-1/2 -translate-x-1/2 w-40">
+      <img src="https://cdn-icons-png.flaticon.com/512/259/259713.png" alt="cloud" class="animate-float opacity-50">
+    </div>
+    <h1 class="gallery-title mx-auto">
+      <span class="relative">
+        Our
+      </span>
+      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart" class="heart"/>
+      Gallery
+    </h1>
+    <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+      <div class="w-12 h-12 bg-[#ffd8b1] rounded-full opacity-30"></div>
+      <div class="w-12 h-12 bg-[#ffd8b1] rounded-full opacity-30"></div>
+      <div class="w-12 h-12 bg-[#ffd8b1] rounded-full opacity-30"></div>
+    </div>
+  </div>
+
+  <div class="flex justify-center gap-6 mt-8 text-gray-700 text-lg">
+    <button onclick="scrollToSection('all')" class="tab-hover tab-selected">Daily Adventures</button>
+    <button onclick="scrollToSection('toddler')" class="tab-hover">Creative Play</button>
+    <button onclick="scrollToSection('play')" class="tab-hover">Nature & Outdoor Fun</button>
+    <button onclick="scrollToSection('events')" class="tab-hover">Events</button>
+  </div>
+<br>
+  <div id="gallery" class="mt-16 space-y-16">
+    <div id="all">
+        <h2 class="text-3xl font-bold text-gray-700 text-center mb-8 relative">
+            <span class="relative z-10 px-4 bg-white">Daily Adventures</span>
+            <div class="absolute w-full h-1 bg-gradient-to-r from-transparent via-[#ffd8b1] to-transparent top-1/2"></div>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://mybrightwheel.com/hs-fs/hubfs/circle-time-png.png?width=598&height=399&name=circle-time-png.png" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Morning Circle Time</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://kidscareclub.com/wp-content/uploads/2022/05/iStockChildCare.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Storytime Adventures</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://img.freepik.com/premium-photo/kids-standing-line-holding-hands-with-each-other_290431-27716.jpg?w=2000" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Friendship Chain</div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="relative shadow-md rounded overflow-hidden img-card">
+              <img src="https://www.secondwavemedia.com/southwest-michigan/galleries/s__mg_1394-.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+              <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+              <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+              <div class="wave-overlay text-center">Counting & Sorting Games</div>
+            </div>
+            <div class="relative shadow-md rounded overflow-hidden img-card">
+              <img src="https://d1b6t1rkd36yrd.cloudfront.net/assets/images/daycare/placeholders/cover_2.jpeg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+              <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+              <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+              <div class="wave-overlay text-center">Numbers Exploration</div>
+            </div>
+            <div class="relative shadow-md rounded overflow-hidden img-card">
+              <img src="https://thumbs.dreamstime.com/b/nursery-teacher-looking-children-daycare-little-kids-toddlers-play-together-developmental-toys-kindergarten-babies-141745009.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+              <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+              <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+              <div class="wave-overlay text-center">Tower Teamwork</div>
+            </div>
+          </div>
+                  
+      </div>
+      <div id="toddler">
+        <h2 class="text-3xl font-bold text-gray-700 text-center mb-8 relative">
+            <span class="relative z-10 px-4 bg-white">Creative Play</span>
+            <div class="absolute w-full h-1 bg-gradient-to-r from-transparent via-[#ffd8b1] to-transparent top-1/2"></div>
+           </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://www.funnycrafts.us/wp-content/uploads/2016/10/autumn-exhibition-craft.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Wall of Wonder</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://www.communityplaythings.com/-/media/images/cpus/resources/article-banner/2006/child-centered-art-vs-teacher.ashx?rev=5efe33aa40244869a3a87fd4f3cbb8b3&hash=35765FBAA80FCD80F50F6A2DF4D77E0D" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Brushes & Big Dreams</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://kidsactivitiesblog.com/wp-content/uploads/2021/08/Process-art-for-preschoolers-using-a-mirror-from-Meri-Cherry-Kids-Activities-Blog.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Marker Mischief</div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://media.istockphoto.com/id/983418152/photo/cheerful-little-children-having-fun-doing-finger-painting.jpg?s=612x612&w=0&k=20&c=DfkQNYZXjiouKO0lBzx7PZoAKAvZLr6WBq-uVjRbBOg%3D" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Finger Painting Fun</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://thumbs.dreamstime.com/b/mother-school-teacher-children-creative-arts-crafts-project-school-home-creative-kids-creative-arts-155721592.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Origami Tales</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://cdn.cdnparenting.com/articles/2019/04/01122845/Creative-Toys-for-Kids-462740626-1024x700.webp" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Building Block Masterpieces</div>
+          </div>
+        </div>
+      </div>
+      <div id="play">
+        <h2 class="text-3xl font-bold text-gray-700 text-center mb-8 relative">
+            <span class="relative z-10 px-4 bg-white">Nature & Outdoor Fun</span>
+            <div class="absolute w-full h-1 bg-gradient-to-r from-transparent via-[#ffd8b1] to-transparent top-1/2"></div>
+           </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://media.istockphoto.com/id/665024098/photo/group-of-happy-kids-having-fun-on-roundabout-at-playground.jpg?s=612x612&w=0&k=20&c=4KnT3cbW2EJFZCygPzs62FwVImUXOWTCT93xckX5LqQ%3D" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Roundabout Playtime</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://www.shutterstock.com/image-photo/child-on-swing-playing-outdoor-600nw-1648931950.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Swing Set Giggles</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://d26oc3sg82pgk3.cloudfront.net/files/media/edit/image/43970/article_full@3x.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Ready, Set, Race!</div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://media.istockphoto.com/id/1337046657/photo/group-of-small-nursery-school-children-playing-outdoors-on-playground.jpg?s=612x612&w=0&k=20&c=rOlzxW9sGKyoNG_M6iNrpHZMDGeI_m7FMLyStgFuk5A%3D" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Playground Moments</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://media.istockphoto.com/id/1346503960/photo/school-children-with-a-parachute.jpg?s=612x612&w=0&k=20&c=4BjEbe6hdVjfRsAXXc9N7NJbjt7g0KbBq61fahOddMk%3D"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Parachute Play</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://media.istockphoto.com/id/1303202663/photo/preschooler-boy-is-exploring-nature-with-magnifying-glass-little-child-is-looking-on-leaf-of.jpg?s=612x612&w=0&k=20&c=v28-I5jLs-TTgFrnCnUZbBUR20ZxxCIWpXczvGsjW5M%3D" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Garden Explorers</div>
+          </div>
+        </div>
+      </div>
+      <div id="events">
+        <h2 class="text-3xl font-bold text-gray-700 text-center mb-8 relative">
+            <span class="relative z-10 px-4 bg-white">Events</span>
+            <div class="absolute w-full h-1 bg-gradient-to-r from-transparent via-[#ffd8b1] to-transparent top-1/2"></div>
+           </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://moujschool.com/wp-content/uploads/2023/05/day-care-activities-980x510.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">On Stage Moments</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://thehomecoming.org/wp-content/uploads/2019/04/music_and_dance_small.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Dance Floor Fun</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://cdn.britannica.com/44/95244-004-710744CC.jpg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Skating Day</div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://kidcityusa.com/wp-content/uploads/2022/02/Benefits-of-Daycare.jpeg" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Future Me Dress-Up</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://the.akdn/_next/image?url=https://static.the.akdn/53832/1726578005-12-ikhwan-al-safa-education-centre-salamieh-19-07-23.jpeg?h%3D1200%26w%3D2000%26fm%3Djpg&w=3840&q=75" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Craft Competition</div>
+          </div>
+          <div class="relative shadow-md rounded overflow-hidden img-card">
+            <img src="https://media.istockphoto.com/id/1189351718/photo/christmas-preschool-instant-print-transfer-activities.jpg?s=612x612&w=0&k=20&c=PHblIbxMGcOkhO0qwd9f9Og-VDRn60823juYQZDO1wk%3D" class="w-full h-full object-cover object-center zoom-img"> class="w-full zoom-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470335.png" class="decorative-border top-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470358.png" class="decorative-border bottom-right">
+            <div class="wave-overlay text-center">Festive Cheers</div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    function scrollToSection(id) {
+      const section = document.getElementById(id);
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+    document.querySelectorAll('.wave-overlay').forEach(overlay => {
+      overlay.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    });
+  </script>
+</body>
+</html>
